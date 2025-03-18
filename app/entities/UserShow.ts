@@ -2,6 +2,14 @@ import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Upd
 import {User} from "./User";
 import {Show} from "./Show";
 
+export enum Staus {
+  WATCHING,
+  COMPLETED,
+  ON_HOLD,
+  DROPPED,
+  PLAN_TO_WATCH
+}
+
 @Entity()
 export class UserShow {
   @PrimaryGeneratedColumn()
@@ -12,6 +20,12 @@ export class UserShow {
 
   @Column()
   showId: number;
+
+  @Column({type: 'enum', enum: Staus})
+  status: Staus;
+
+  @Column({type: 'int', default: 0})
+  progress: number;
 
   @CreateDateColumn()
   createdAt: Date;
