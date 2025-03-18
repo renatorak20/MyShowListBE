@@ -9,6 +9,7 @@ import {
   } from "typeorm";
   import {UserShow} from "./UserShow";
   import {Genre} from "./Genre";
+  import {Comment} from "./Comment";
   
   export enum ShowType {
     TV_SERIES,
@@ -47,6 +48,9 @@ import {
     @ManyToMany(() => Genre, genre => genre.shows)
     @JoinTable()
     genres: Genre[];
+  
+    @OneToMany(() => Comment, comment => comment.show)
+    comments: Comment[];
   
     @OneToMany(() => UserShow, userShow => userShow.show)
     userShows: UserShow[];

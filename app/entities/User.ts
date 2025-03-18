@@ -1,5 +1,6 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {UserShow} from "./UserShow";
+import {Comment} from "./Comment";
 
 @Entity()
 export class User{
@@ -26,6 +27,9 @@ export class User{
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Comment, comment => comment.user)
+  comments: Comment[];
 
   @OneToMany(() => UserShow, userShow => userShow.user)
   userShows: UserShow[];

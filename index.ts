@@ -6,6 +6,7 @@ import {Show} from "./app/entities/Show";
 import {SnakeNamingStrategy} from "typeorm-naming-strategies";
 import {UserShow} from "./app/entities/UserShow";
 import {Genre, GenreType} from "./app/entities/Genre";
+import {Comment} from "./app/entities/Comment";
 
 const app = express();
 const AppDataSource = new DataSource({
@@ -15,7 +16,7 @@ const AppDataSource = new DataSource({
   username: 'root',
   password: 'root',
   database: 'my_show_list',
-  entities: [User, Show, UserShow, Genre],
+  entities: [User, Show, UserShow, Genre, Comment],
   namingStrategy: new SnakeNamingStrategy(),
   synchronize: true,
   logging: false,
