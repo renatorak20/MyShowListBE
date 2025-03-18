@@ -1,4 +1,4 @@
-import express, {Router} from 'express';
+import express from 'express';
 import {DataSource, Repository} from "typeorm";
 import {config} from "./config";
 import {User} from "./app/entities/User";
@@ -8,6 +8,7 @@ import {UserShow} from "./app/entities/UserShow";
 import {Genre, GenreType} from "./app/entities/Genre";
 import {Comment} from "./app/entities/Comment";
 import showRoute from "./app/routes/showRoute";
+import {userRoute} from "./app/routes/userRoute";
 
 const app = express();
 const dataSource = new DataSource({
@@ -46,6 +47,7 @@ const main = async () => {
     const router = express.Router();
 
     router.use(showRoute(dataSource.getRepository(Show)))
+    router.use(userRoute(dataSource.getRepository(User)));
 
     app.use('/api', router);
 
