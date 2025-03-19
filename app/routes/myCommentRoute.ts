@@ -45,15 +45,13 @@ export const myCommentRoute = (commentRepo: Repository<Comment>) => {
     } catch (e) {
       res.status(400).json({message: 'Error updating comment, ' + e.message});
     }
-  }).delete(async (req: any, res) => {
-    try {
-      if(!req.body.id) {
-        res.status(400).json({message: 'Comment id not provided'});
-        return;
-      }
+  });
 
-      const comment = await commentRepo.findOne({where: {id: req.body.id, userId: req.decoded.user.id}});
-      console.log(comment);
+  router.delete('/comments/:id', async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const comment = await commentRepo.findOne({where: {id: id, userId: req.decoded.user.id}});
+
       if (!comment) {
         res.status(404).json({message: 'Comment not found'});
         return;

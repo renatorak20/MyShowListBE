@@ -16,7 +16,7 @@ const showRoute = (showRepo: Repository<Show>) => {
     }
   });
 
-  router.route('/shows/:id').get(async (req, res) => {
+  router.get('/shows/:id', async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       const show = await showRepo.findOne({where: {id: id}, relations: {genres: true, comments: true}});
@@ -26,7 +26,7 @@ const showRoute = (showRepo: Repository<Show>) => {
         return;
       }
 
-      res.status(200).json(show);
+      res.status(200).json({...show, type: ShowType[show.type]});
     } catch (e) {
       res.status(400).json({message: 'Error fetching show, ' + e.message});
     }
@@ -81,9 +81,11 @@ const showRoute = (showRepo: Repository<Show>) => {
     } catch (e) {
       res.status(400).json({message: 'Error updating show, ' + e.message});
     }
-  }).delete(async (req, res) => {
+  })
+
+  router.delete('/shows/:id', async (req, res) => {
     try {
-      await showRepo.remove(new Show().setId(req.body.id));
+      await showRepo.remove(new Show().setId(parseInt(req.params.id)));
       res.status(200).json({message: 'Show deleted'});
     } catch (e) {
       res.status(400).json({message: 'Error deleting show, ' + e.message});
