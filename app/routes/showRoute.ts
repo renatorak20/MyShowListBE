@@ -5,7 +5,7 @@ import {Router} from "express";
 const showRoute = (showRepo: Repository<Show>) => {
   const router = Router();
 
-  router.route('/shows').get(async (_req, res) => {
+  router.get('/shows', async (_req, res) => {
     try {
       const shows = (await showRepo.find({relations: {genres: true}}))
         .map(show => ({...show, type: ShowType[show.type]}));
@@ -14,7 +14,36 @@ const showRoute = (showRepo: Repository<Show>) => {
     } catch (e) {
       res.status(500).json({message: 'Error fetching shows, ' + e.message});
     }
-  }).post(async (req, res) => {
+  });
+
+  router.route('/shows/:id').get(async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const show = await showRepo.findOne({where: {id: id}, relations: {genres: true}});
+
+      if (!show) {
+        res.status(404).json({message: 'Show not found'});
+        return;
+      }
+
+      res.status(200).json(show);
+    } catch (e) {
+      res.status(400).json({message: 'Error fetching show, ' + e.message});
+    }
+  });
+
+  router.use((req: any, res, next) => {
+      if (!req.decoded.user.isAdmin) {
+        res.status(403).send({
+          message: 'Not an admin'
+        });
+        return;
+      }
+
+      next();
+    });
+
+  router.route('/shows').post(async (req, res) => {
     try {
       const show = new Show()
         .setTitle(req.body.title)
@@ -58,22 +87,6 @@ const showRoute = (showRepo: Repository<Show>) => {
       res.status(200).json({message: 'Show deleted'});
     } catch (e) {
       res.status(400).json({message: 'Error deleting show, ' + e.message});
-    }
-  });
-
-  router.route('/shows/:id').get(async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const show = await showRepo.findOne({where: {id: id}, relations: {genres: true}});
-
-      if (!show) {
-        res.status(404).json({message: 'Show not found'});
-        return;
-      }
-
-      res.status(200).json(show);
-    } catch (e) {
-      res.status(400).json({message: 'Error fetching show, ' + e.message});
     }
   });
 

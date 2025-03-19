@@ -1,5 +1,6 @@
 export const config = {
-    port:  process.env.PORT || 8081,
-    dbHost: 'localhost',
-    dbPort: 3306
-  };
+  port:  process.env.PORT || 8081,
+  dbHost: 'localhost',
+  dbPort: 3306,
+  secret:'nekidugacakstringzakodiranjetokena'
+};
