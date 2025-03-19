@@ -2,13 +2,11 @@ import {Repository} from "typeorm";
 import {User} from "../entities/User";
 import {Router} from "express";
 import bcryptjs from "bcryptjs";
-import jsonwebtoken from "jsonwebtoken";
-import {config} from "../../config";
 
 export const userRoute = (userRepo: Repository<User>) => {
   const router = Router();
 
-  router.post('/users', async (req, res) => {
+  router.route('/users').post(async (req, res) => {
     try {
       const {username, email, password} = req.body;
       if (!username || !email || !password) {
@@ -29,33 +27,7 @@ export const userRoute = (userRepo: Repository<User>) => {
     } catch (e) {
       res.status(400).json({message: 'Error creating user, ' + e.message});
     }
-  });
-
-  router.use((req: any, res, next) => {
-      const token = req.header("Authorization");
-
-      if (!token) {
-        res.status(403).send({
-          message: 'No token'
-        });
-        return;
-      }
-
-      jsonwebtoken.verify(token, config.secret, (e: any, decoded: any) => {
-        if (e) {
-          res.status(403).send({
-            message: 'Wrong token'
-          });
-          return;
-        }
-
-        req.decoded = decoded;
-        next();
-      });
-    }
-  );
-
-  router.get('/users', async (_req, res) => {
+  }).get(async (_req, res) => {
     try {
       const users = await userRepo.find();
       res.status(200).json(users);

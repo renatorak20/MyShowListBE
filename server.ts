@@ -12,6 +12,7 @@ import {userRoute} from "./app/routes/userRoute";
 import {authRoute} from "./app/routes/authRoute";
 import {meRoute} from "./app/routes/meRoute";
 import {genreRoute} from "./app/routes/genreRoute";
+import jsonwebtoken from "jsonwebtoken";
 
 const app = express();
 const dataSource = new DataSource({
@@ -51,6 +52,7 @@ const main = async () => {
 
     router.use(authRoute(dataSource.getRepository(User)));
     router.use(userRoute(dataSource.getRepository(User)));
+    router.use(authMiddleware);
     router.use(meRoute(dataSource.getRepository(UserShow), dataSource.getRepository(Comment)));
     router.use(genreRoute(dataSource.getRepository(Genre)));
     router.use(showRoute(dataSource.getRepository(Show)));
@@ -91,5 +93,28 @@ const initDb = async (genresRepo: Repository<Genre>) => {
 
   console.log('Database initialized');
 };
+
+const authMiddleware = (req: any, res: any, next: any) => {
+  const token = req.header("Authorization");
+
+  if (!token) {
+    res.status(403).send({
+      message: 'No token'
+    });
+    return;
+  }
+
+  jsonwebtoken.verify(token, config.secret, (e: any, decoded: any) => {
+    if (e) {
+      res.status(403).send({
+        message: 'Wrong token'
+      });
+      return;
+    }
+
+    req.decoded = decoded;
+    next();
+  });
+}
 
 main();

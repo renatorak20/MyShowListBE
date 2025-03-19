@@ -21,7 +21,7 @@ export const authRoute = (userRepo: Repository<User>) => {
 
       if (!validPass) {
         res.status(401).send({
-          message: 'Wrong credentials'
+          message: 'Wrong password'
         });
         return;
       }
