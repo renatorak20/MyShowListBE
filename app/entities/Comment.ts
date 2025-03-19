@@ -27,4 +27,25 @@ export class Comment {
 
   @ManyToOne(() => Show, show => show.comments)
   show: Show;
+
+
+  setId(id: number): Comment {
+    this.id = id;
+    return this;
+  }
+
+  setUserId(userId: number): Comment {
+    this.userId = userId;
+    return this;
+  }
+
+  setShowId(showId: number): Comment {
+    this.showId = showId;
+    return this;
+  }
+
+  setText(text: string): Comment {
+    this.text = text;
+    return this;
+  }
 }

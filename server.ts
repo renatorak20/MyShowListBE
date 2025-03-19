@@ -50,7 +50,7 @@ const main = async () => {
 
     router.use(authRoute(dataSource.getRepository(User)));
     router.use(userRoute(dataSource.getRepository(User)));
-    router.use(meRoute(dataSource.getRepository(UserShow)));
+    router.use(meRoute(dataSource.getRepository(UserShow), dataSource.getRepository(Comment)));
     router.use(showRoute(dataSource.getRepository(Show)));
 
 

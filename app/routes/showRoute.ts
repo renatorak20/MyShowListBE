@@ -19,7 +19,7 @@ const showRoute = (showRepo: Repository<Show>) => {
   router.route('/shows/:id').get(async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const show = await showRepo.findOne({where: {id: id}, relations: {genres: true}});
+      const show = await showRepo.findOne({where: {id: id}, relations: {genres: true, comments: true}});
 
       if (!show) {
         res.status(404).json({message: 'Show not found'});
