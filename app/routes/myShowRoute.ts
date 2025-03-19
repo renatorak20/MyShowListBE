@@ -5,7 +5,7 @@ import {Router} from "express";
 export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
   const router = Router();
 
-  router.route('/show').get(async (req: any, res) => {
+  router.route('/shows').get(async (req: any, res) => {
     try {
       const userShow = await userShowRepo.find({where: {userId: req.decoded.user.id}, relations: {show: true}});
       res.status(200).json(userShow);
@@ -14,6 +14,11 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     }
   }).post(async (req: any, res) => {
     try {
+      if (!req.body.showId) {
+        res.status(400).json({message: 'Show id not provided'});
+        return;
+      }
+
       if (await userShowRepo.findOne({where: {userId: req.decoded.user.id, showId: req.body.showId}})) {
         res.status(400).json({message: 'Show already added to your list'});
         return;
@@ -34,6 +39,11 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     }
   }).put(async (req: any, res) => {
     try {
+      if(!req.body.showId) {
+        res.status(400).json({message: 'Show id not provided'});
+        return;
+      }
+
       const userShow = await userShowRepo.findOne({where: {userId: req.decoded.user.id, showId: req.body.showId}});
 
       if (!userShow) {
@@ -53,6 +63,11 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     }
   }).delete(async (req: any, res) => {
     try {
+      if (!req.body.showId) {
+        res.status(400).json({message: 'Show id not provided'});
+        return;
+      }
+
       const userShow = await userShowRepo.findOne({where: {userId: req.decoded.user.id, showId: req.body.showId}});
 
       if (!userShow) {
