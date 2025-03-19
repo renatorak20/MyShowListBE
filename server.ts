@@ -11,6 +11,7 @@ import showRoute from "./app/routes/showRoute";
 import {userRoute} from "./app/routes/userRoute";
 import {authRoute} from "./app/routes/authRoute";
 import {meRoute} from "./app/routes/meRoute";
+import {genreRoute} from "./app/routes/genreRoute";
 
 const app = express();
 const dataSource = new DataSource({
@@ -51,6 +52,7 @@ const main = async () => {
     router.use(authRoute(dataSource.getRepository(User)));
     router.use(userRoute(dataSource.getRepository(User)));
     router.use(meRoute(dataSource.getRepository(UserShow), dataSource.getRepository(Comment)));
+    router.use(genreRoute(dataSource.getRepository(Genre)));
     router.use(showRoute(dataSource.getRepository(Show)));
 
 
