@@ -1,13 +1,15 @@
 import {Repository} from "typeorm";
 import {UserShow} from "../entities/UserShow";
 import {Router} from "express";
+import {ShowType} from "../entities/Show";
 
 export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
   const router = Router();
 
   router.route('/shows').get(async (req: any, res) => {
     try {
-      const userShow = await userShowRepo.find({where: {userId: req.decoded.user.id}, relations: {show: true}});
+      const userShow = (await userShowRepo.find({where: {userId: req.decoded.user.id}, relations: {show: true}}))
+        .map(userShow => ({...userShow, show: {...userShow.show, type: ShowType[userShow.show.type]}}));
       res.status(200).json(userShow);
     } catch (e) {
       res.status(500).json({message: 'Error fetching shows, ' + e.message});
@@ -61,14 +63,12 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     } catch (e) {
       res.status(400).json({message: 'Error updating show on your list, ' + e.message});
     }
-  }).delete(async (req: any, res) => {
-    try {
-      if (!req.body.showId) {
-        res.status(400).json({message: 'Show id not provided'});
-        return;
-      }
+  });
 
-      const userShow = await userShowRepo.findOne({where: {userId: req.decoded.user.id, showId: req.body.showId}});
+  router.delete('/shows/:id', async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const userShow = await userShowRepo.findOne({where: {id, userId: req.decoded.user.id}});
 
       if (!userShow) {
         res.status(404).json({message: 'Show not found'});
