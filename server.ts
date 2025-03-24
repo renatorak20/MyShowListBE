@@ -13,6 +13,8 @@ import {authRoute} from "./app/routes/authRoute";
 import {meRoute} from "./app/routes/meRoute";
 import {genreRoute} from "./app/routes/genreRoute";
 import jsonwebtoken from "jsonwebtoken";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
 const app = express();
 const dataSource = new DataSource({
@@ -30,15 +32,23 @@ const dataSource = new DataSource({
 
 const main = async () => {
   try {
-    await dataSource.initialize();
 
-    console.log('Connected to database');
-
-    await initDb(dataSource.getRepository(Genre));
+    const swaggerSpec = swaggerJsdoc({
+      definition: {
+        openapi: "3.0.0",
+        info: {
+          title: "My API Documentation",
+          version: "1.0.0",
+          description: "API documentation for authentication endpoints"
+        }
+      },
+      apis: ["./app/routes/*.ts", "./app/entities/*.ts"]
+    });
 
     app.use(express.urlencoded({extended: true}));
     app.use(express.json());
     app.use(express.static(__dirname + '/public'));
+    app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     //todo: remove this
     app.use(function (_req, res, next) {

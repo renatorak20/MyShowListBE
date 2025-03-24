@@ -2,6 +2,34 @@ import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Upd
 import {User} from "./User";
 import {Show} from "./Show";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Comment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID of the show
+ *         userId:
+ *           type: integer
+ *           example: 10
+ *         showId:
+ *           type: integer
+ *           example: 100
+ *         text:
+ *           type: string
+ *           example: "Great show!"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-20T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-20T12:30:00Z"
+ */
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn()

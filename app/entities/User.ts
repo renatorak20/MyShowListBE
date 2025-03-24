@@ -2,6 +2,42 @@ import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Upd
 import {UserShow} from "./UserShow";
 import {Comment} from "./Comment";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID of the user
+ *         username:
+ *           type: string
+ *           description: Unique username of the user
+ *         email:
+ *           type: string
+ *           description: Unique email of the user
+ *         isAdmin:
+ *           type: boolean
+ *           default: false
+ *           description: Indicates if the user has admin privileges
+ *         password:
+ *           type: string
+ *           description: Hashed password of the user
+ *         salt:
+ *           type: string
+ *           description: Salt used for password hashing
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the user was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the user was last updated
+ */
+
 @Entity()
 export class User{
   @PrimaryGeneratedColumn()

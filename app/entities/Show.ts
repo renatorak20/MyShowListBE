@@ -11,11 +11,59 @@ import {UserShow} from "./UserShow";
 import {Genre} from "./Genre";
 import {Comment} from "./Comment";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ShowType:
+ *       type: string
+ *       enum: [TV_SERIES, MOVIE]
+ *       description: Type of the show (TV series or movie)
+ */
 export enum ShowType {
   TV_SERIES,
   MOVIE,
 }
 
+  /**
+   * @swagger
+   * components:
+   *   schemas:
+   *     Show:
+   *       type: object
+   *       properties:
+   *         id:
+   *           type: integer
+   *           description: Auto-generated ID of the show
+   *         title:
+   *           type: string
+   *           description: Title of the show
+   *         description:
+   *           type: string
+   *           description: Detailed description
+   *         type:
+   *           type: string
+   *           enum: [TV_SERIES, MOVIE]
+   *           description: Type of the show
+   *         episodes:
+   *           type: integer
+   *           default: 1
+   *           description: Number of episodes
+   *         startDate:
+   *           type: string
+   *           format: date
+   *           nullable: true
+   *         endDate:
+   *           type: string
+   *           format: date
+   *           nullable: true
+   *         createdAt:
+   *           type: string
+   *           format: date
+   *         updatedAt:
+   *           type: string
+   *           format: date
+   */
 @Entity()
 export class Show {
   @PrimaryGeneratedColumn()
