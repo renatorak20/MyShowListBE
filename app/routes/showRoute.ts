@@ -2,6 +2,301 @@ import {Repository} from "typeorm";
 import {Show, ShowType} from "../entities/Show";
 import {Router} from "express";
 
+/**
+ * @swagger
+ * /shows:
+ *   get:
+ *     summary: Retrieves a list of all shows
+ *     tags: [Shows]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of shows
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '../entities/Show.ts#/components/schemas/Show'
+ *             example:
+ *               - id: 1
+ *                 title: "Breaking Bad"
+ *                 description: "A high school chemistry teacher turned methamphetamine producer."
+ *                 type: "TV_SERIES"
+ *                 episodes: 62
+ *                 startDate: "2008-01-20"
+ *                 endDate: "2013-09-29"
+ *                 createdAt: "2024-03-20T12:00:00Z"
+ *                 updatedAt: "2024-03-20T12:00:00Z"
+ *               - id: 2
+ *                 title: "The Dark Knight"
+ *                 description: "Batman must face the Joker in a one-on-one fight."
+ *                 type: "MOVIE"
+ *                 episodes: 1
+ *                 startDate: "2008-07-18"
+ *                 endDate: null
+ *                 createdAt: "2024-03-20T12:00:00Z"
+ *                 updatedAt: "2024-03-20T12:00:00Z"
+ *       500:
+ *         description: Server error while fetching shows
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching shows, <error details>"
+ *   post:
+ *     summary: Creates a new show
+ *     tags: [Shows]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '../entities/Show.ts#/components/schemas/Show'
+ *           example:
+ *             title: "Stranger Things"
+ *             description: "A group of kids uncover a dark secret in their small town."
+ *             type: "TV_SERIES"
+ *             episodes: 25
+ *             startDate: "2016-07-15"
+ *             endDate: null
+ *             genres: [ACTION, ADVENTURE]	
+ *     responses:
+ *       201:
+ *         description: Successfully created the show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../entities/Show.ts#/components/schemas/Show'
+ *             example:
+ *               id: 3
+ *               title: "Stranger Things"
+ *               description: "A group of kids uncover a dark secret in their small town."
+ *               type: "TV_SERIES"
+ *               episodes: 25
+ *               startDate: "2016-07-15"
+ *               endDate: null
+ *               createdAt: "2024-03-20T12:00:00Z"
+ *               updatedAt: "2024-03-20T12:00:00Z"
+ *               genres: [ACTION, ADVENTURE]	
+ *       400:
+ *         description: Invalid request, missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error creating show, <error details>"
+ *       403:
+ *         description: Permission denied, not an admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Not an admin"
+ *       500:
+ *        description: Server error while creating show
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error"
+ *   delete:
+ *     summary: Deletes a show by ID
+ *     tags: [Shows]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the show to delete
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Show deleted"
+ *       400:
+ *         description: Error deleting show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error deleting show, <error details>"
+ *       403:
+ *         description: Permission denied, not an admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Not an admin"
+ *       404:
+ *         description: Show not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Show not found"
+ *   put:
+ *     summary: Updates an existing show
+ *     tags: [Shows]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '../entities/Show.ts#/components/schemas/Show'
+ *           example:
+ *             id: 3
+ *             title: "Stranger Things Season 2"
+ *             description: "The kids continue to uncover mysteries in Hawkins."
+ *             type: "TV_SERIES"
+ *             episodes: 9
+ *             startDate: "2017-10-27"
+ *             endDate: null
+ *             genres: [ACTION, ADVENTURE]	
+ *     responses:
+ *       200:
+ *         description: Successfully updated the show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../entities/Show.ts#/components/schemas/Show'
+ *             example:
+ *               id: 3
+ *               title: "Stranger Things Season 2"
+ *               description: "The kids continue to uncover mysteries in Hawkins."
+ *               type: "TV_SERIES"
+ *               episodes: 9
+ *               startDate: "2017-10-27"
+ *               endDate: null
+ *               createdAt: "2024-03-20T12:00:00Z"
+ *               updatedAt: "2024-03-20T12:00:00Z"
+ *               genres: [ACTION, ADVENTURE]	
+ *       400:
+ *         description: Error updating show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error updating show, <error details>"
+ *       403:
+ *         description: Permission denied, not an admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Not an admin"
+ *       404:
+ *         description: Show not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Show not found"
+ *       500:
+ *        description: Server error while creating show
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error"
+ * /shows/{id}:
+ *   get:
+ *     summary: Retrieves a specific show by ID
+ *     tags: [Shows]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the show to retrieve
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../entities/Show.ts#/components/schemas/Show'
+ *             example:
+ *               id: 1
+ *               title: "Breaking Bad"
+ *               description: "A high school chemistry teacher turned methamphetamine producer."
+ *               type: "TV_SERIES"
+ *               episodes: 62
+ *               startDate: "2008-01-20"
+ *               endDate: "2013-09-29"
+ *               createdAt: "2024-03-20T12:00:00Z"
+ *               updatedAt: "2024-03-20T12:00:00Z"
+ *       400:
+ *         description: Server error while fetching show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching show, <error details>"
+ *       404:
+ *         description: Show not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Show not found"
+ *       500:
+ *        description: Server error while creating show
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error"
+ */
 const showRoute = (showRepo: Repository<Show>) => {
   const router = Router();
 
@@ -59,7 +354,9 @@ const showRoute = (showRepo: Repository<Show>) => {
     } catch (e) {
       res.status(400).json({message: 'Error creating show, ' + e.message});
     }
-  }).put(async (req, res) => {
+  })
+  
+  .put(async (req, res) => {
     try {
       const show = await showRepo.findOne({where: {id: req.body.id}, relations: {genres: true}});
 

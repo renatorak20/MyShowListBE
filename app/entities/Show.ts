@@ -63,6 +63,10 @@ export enum ShowType {
    *         updatedAt:
    *           type: string
    *           format: date
+   *         genres:
+   *           type: array
+   *           items:
+   *             $ref: '../entities/Genre.ts#/components/schemas/Genre'
    */
 @Entity()
 export class Show {
