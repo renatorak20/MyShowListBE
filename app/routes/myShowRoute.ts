@@ -3,10 +3,13 @@ import {UserShow} from "../entities/UserShow";
 import {Router} from "express";
 import {ShowType} from "../entities/Show";
 
+
 export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
   const router = Router();
 
-  router.route('/shows').get(async (req: any, res) => {
+  router.route('/shows')
+  
+  .get(async (req: any, res) => {
     try {
       const userShow = (await userShowRepo.find({where: {userId: req.decoded.user.id}, relations: {show: true}}))
         .map(userShow => ({...userShow, show: {...userShow.show, type: ShowType[userShow.show.type]}}));
@@ -14,7 +17,9 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     } catch (e) {
       res.status(500).json({message: 'Error fetching shows, ' + e.message});
     }
-  }).post(async (req: any, res) => {
+  })
+  
+  .post(async (req: any, res) => {
     try {
       if (!req.body.showId) {
         res.status(400).json({message: 'Show id not provided'});
@@ -39,7 +44,9 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
     } catch (e) {
       res.status(400).json({message: 'Error adding show to your list, ' + e.message});
     }
-  }).put(async (req: any, res) => {
+  })
+  
+  .put(async (req: any, res) => {
     try {
       if(!req.body.showId) {
         res.status(400).json({message: 'Show id not provided'});

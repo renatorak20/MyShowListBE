@@ -6,6 +6,72 @@ import bcryptjs from "bcryptjs";
 /**
  * @swagger
  * /users:
+ *   get:
+ *     summary: Retrieves a list of all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id: 
+ *                     type: integer
+ *                     example: 1
+ *                   username:
+ *                     type: string
+ *                     example: "john_doe"
+ *                   email:
+ *                     type: string
+ *                     example: "oU7kW@example.com"
+ *                   isAdmin:
+ *                     type: boolean
+ *                     example: false
+ *                   password:
+ *                     type: string
+ *                     example: "password123"
+ *                   salt:
+ *                     type: string
+ *                     example: "random_salt"
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-03-20T12:00:00Z"
+ *                   updatedAt:
+ *                     type: string 
+ *                     format: date-time
+ *                     example: "2024-03-20T12:00:00Z"
+ *             example:
+ *               - id: 1
+ *                 username: "john_doe"
+ *                 email: "john.doe@example.com"
+ *                 isAdmin: false
+ *                 password: "hashed_password"
+ *                 salt: "random_salt"
+ *                 createdAt: "2024-03-20T12:00:00Z"
+ *                 updatedAt: "2024-03-20T12:00:00Z"
+ *               - id: 2
+ *                 username: "jane_doe"
+ *                 email: "jane.doe@example.com"
+ *                 isAdmin: true
+ *                 password: "hashed_password"
+ *                 salt: "random_salt"
+ *                 createdAt: "2024-03-21T12:00:00Z"
+ *                 updatedAt: "2024-03-21T12:00:00Z"
+ *       500:
+ *         description: Server error while fetching users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching users, <error details>"
  *   post:
  *     summary: Creates a new user
  *     tags: [Users]
@@ -74,72 +140,6 @@ import bcryptjs from "bcryptjs";
  *                 message:
  *                   type: string
  *                   example: "Error creating user, <error details>"
- *   get:
- *     summary: Retrieves a list of all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: Successfully retrieved the list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id: 
- *                     type: integer
- *                     example: 1
- *                   username:
- *                     type: string
- *                     example: "john_doe"
- *                   email:
- *                     type: string
- *                     example: "oU7kW@example.com"
- *                   isAdmin:
- *                     type: boolean
- *                     example: false
- *                   password:
- *                     type: string
- *                     example: "password123"
- *                   salt:
- *                     type: string
- *                     example: "random_salt"
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                     example: "2024-03-20T12:00:00Z"
- *                   updatedAt:
- *                     type: string 
- *                     format: date-time
- *                     example: "2024-03-20T12:00:00Z"
- *             example:
- *               - id: 1
- *                 username: "john_doe"
- *                 email: "john.doe@example.com"
- *                 isAdmin: false
- *                 password: "hashed_password"
- *                 salt: "random_salt"
- *                 createdAt: "2024-03-20T12:00:00Z"
- *                 updatedAt: "2024-03-20T12:00:00Z"
- *               - id: 2
- *                 username: "jane_doe"
- *                 email: "jane.doe@example.com"
- *                 isAdmin: true
- *                 password: "hashed_password"
- *                 salt: "random_salt"
- *                 createdAt: "2024-03-21T12:00:00Z"
- *                 updatedAt: "2024-03-21T12:00:00Z"
- *       500:
- *         description: Server error while fetching users
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error fetching users, <error details>"
  */
 
 export const userRoute = (userRepo: Repository<User>) => {

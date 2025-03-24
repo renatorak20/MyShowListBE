@@ -46,6 +46,64 @@ import {Router} from "express";
  *                 message:
  *                   type: string
  *                   example: "Error fetching shows, <error details>"
+ * /shows/{id}:
+ *   get:
+ *     summary: Retrieves a specific show by ID
+ *     tags: [Shows]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the show to retrieve
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../entities/Show.ts#/components/schemas/Show'
+ *             example:
+ *               id: 1
+ *               title: "Breaking Bad"
+ *               description: "A high school chemistry teacher turned methamphetamine producer."
+ *               type: "TV_SERIES"
+ *               episodes: 62
+ *               startDate: "2008-01-20"
+ *               endDate: "2013-09-29"
+ *               createdAt: "2024-03-20T12:00:00Z"
+ *               updatedAt: "2024-03-20T12:00:00Z"
+ *       400:
+ *         description: Server error while fetching show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching show, <error details>"
+ *       404:
+ *         description: Show not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Show not found"
+ *       500:
+ *        description: Server error while creating show
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error"
  *   post:
  *     summary: Creates a new show
  *     tags: [Shows]
@@ -111,57 +169,6 @@ import {Router} from "express";
  *                message:
  *                  type: string
  *                  example: "Internal server error"
- *   delete:
- *     summary: Deletes a show by ID
- *     tags: [Shows]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The ID of the show to delete
- *     responses:
- *       200:
- *         description: Successfully deleted the show
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Show deleted"
- *       400:
- *         description: Error deleting show
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error deleting show, <error details>"
- *       403:
- *         description: Permission denied, not an admin
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Not an admin"
- *       404:
- *         description: Show not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Show not found"
  *   put:
  *     summary: Updates an existing show
  *     tags: [Shows]
@@ -238,9 +245,8 @@ import {Router} from "express";
  *                message:
  *                  type: string
  *                  example: "Internal server error"
- * /shows/{id}:
- *   get:
- *     summary: Retrieves a specific show by ID
+ *   delete:
+ *     summary: Deletes a show by ID
  *     tags: [Shows]
  *     parameters:
  *       - in: path
@@ -248,26 +254,10 @@ import {Router} from "express";
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the show to retrieve
+ *         description: The ID of the show to delete
  *     responses:
  *       200:
- *         description: Successfully retrieved the show
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '../entities/Show.ts#/components/schemas/Show'
- *             example:
- *               id: 1
- *               title: "Breaking Bad"
- *               description: "A high school chemistry teacher turned methamphetamine producer."
- *               type: "TV_SERIES"
- *               episodes: 62
- *               startDate: "2008-01-20"
- *               endDate: "2013-09-29"
- *               createdAt: "2024-03-20T12:00:00Z"
- *               updatedAt: "2024-03-20T12:00:00Z"
- *       400:
- *         description: Server error while fetching show
+ *         description: Successfully deleted the show
  *         content:
  *           application/json:
  *             schema:
@@ -275,7 +265,27 @@ import {Router} from "express";
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error fetching show, <error details>"
+ *                   example: "Show deleted"
+ *       400:
+ *         description: Error deleting show
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error deleting show, <error details>"
+ *       403:
+ *         description: Permission denied, not an admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Not an admin"
  *       404:
  *         description: Show not found
  *         content:
@@ -286,16 +296,6 @@ import {Router} from "express";
  *                 message:
  *                   type: string
  *                   example: "Show not found"
- *       500:
- *        description: Server error while creating show
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                message:
- *                  type: string
- *                  example: "Internal server error"
  */
 const showRoute = (showRepo: Repository<Show>) => {
   const router = Router();
