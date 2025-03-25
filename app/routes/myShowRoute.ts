@@ -16,8 +16,6 @@ import {ShowType} from "../entities/Show";
  *           application/json:
  *             schema:
  *               type: array
- *               items:
- *                 $ref: '../entities/Show.ts#/components/schemas/Show'
  *             example:
  *               - id: 1
  *                 userId: 123
@@ -42,8 +40,6 @@ import {ShowType} from "../entities/Show";
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             $ref: '../entities/Comment.ts#/components/schemas/Comment'
  *           example:
  *             showId: 456
  *             text: "Amazing episode!"
@@ -52,8 +48,6 @@ import {ShowType} from "../entities/Show";
  *         description: Successfully created the comment
  *         content:
  *           application/json:
- *             schema:
- *               $ref: '../entities/Comment.ts#/components/schemas/Comment'
  *             example:
  *               id: 2
  *               userId: 123
@@ -86,8 +80,6 @@ import {ShowType} from "../entities/Show";
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             $ref: '../entities/Comment.ts#/components/schemas/Comment'
  *           example:
  *             text: "Updated comment text!"
  *     responses:
@@ -95,8 +87,6 @@ import {ShowType} from "../entities/Show";
  *         description: Successfully updated the comment
  *         content:
  *           application/json:
- *             schema:
- *               $ref: '../entities/Comment.ts#/components/schemas/Comment'
  *             example:
  *               id: 2
  *               userId: 123
