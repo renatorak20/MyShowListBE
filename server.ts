@@ -37,7 +37,7 @@ const main = async () => {
       definition: {
         openapi: "3.0.0",
         info: {
-          title: "My API Documentation",
+          title: "My Show List API Documentation",
           version: "1.0.0",
           description: "API documentation for authentication endpoints"
         }
