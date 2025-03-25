@@ -5,7 +5,7 @@ import {ShowType} from "../entities/Show";
 
 /**
  * @swagger
- * /shows:
+ * /user-shows:
  *   get:
  *     summary: Retrieves a list of shows for the authenticated user
  *     tags: [User Shows]
@@ -71,7 +71,7 @@ import {ShowType} from "../entities/Show";
  *                 message:
  *                   type: string
  *                   example: "Error adding comment, <error details>"
- * /shows/{id}:
+ * /user-shows/{id}:
  *   put:
  *     summary: Updates an existing comment by ID
  *     tags: [User Shows]
@@ -176,6 +176,7 @@ import {ShowType} from "../entities/Show";
  *                   type: string
  *                   example: "Comment not found"
  */
+
 export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
   const router = Router();
 
