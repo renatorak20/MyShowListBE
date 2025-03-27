@@ -32,6 +32,9 @@ const dataSource = new DataSource({
 
 const main = async () => {
   try {
+    await dataSource.initialize();
+    console.log('Data source initialized');
+    await initDb(dataSource.getRepository(Genre));
 
     const swaggerSpec = swaggerJsdoc({
       definition: {
