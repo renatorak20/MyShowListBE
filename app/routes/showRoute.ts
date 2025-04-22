@@ -347,7 +347,8 @@ const showRoute = (showRepo: Repository<Show>) => {
         .setEpisodes(req.body.episodes)
         .setStartDate(req.body.startDate)
         .setEndDate(req.body.endDate)
-        .setGenres(req.body.genres);
+        .setGenres(req.body.genres)
+        .setImageUrl(req.body.imageUrl);
 
       await showRepo.save(show);
       res.status(201).json(show);
@@ -371,7 +372,8 @@ const showRoute = (showRepo: Repository<Show>) => {
         .setEpisodes(req.body.episodes)
         .setStartDate(req.body.startDate)
         .setEndDate(req.body.endDate)
-        .setGenres(req.body.genres);
+        .setGenres(req.body.genres)
+        .setImageUrl(req.body.imageUrl);
 
       await showRepo.save(show);
       res.status(200).json(show);

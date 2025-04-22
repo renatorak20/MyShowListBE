@@ -57,6 +57,9 @@ export enum ShowType {
    *           type: string
    *           format: date
    *           nullable: true
+   *         imageUrl:
+   *           type: string
+   *           description: URL of the show's image
    *         createdAt:
    *           type: string
    *           format: date
@@ -90,6 +93,9 @@ export class Show {
 
   @Column({type: 'date', nullable: true})
   endDate: Date;
+
+  @Column({type: 'text'})
+  imageUrl: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -140,6 +146,11 @@ export class Show {
 
   setEndDate(endDate: Date): Show {
     this.endDate = endDate;
+    return this;
+  }
+
+  setImageUrl(imageUrl: string): Show {
+    this.imageUrl = imageUrl;
     return this;
   }
 
